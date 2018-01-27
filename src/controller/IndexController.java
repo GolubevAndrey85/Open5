@@ -18,7 +18,7 @@ import java.util.ArrayList;
 //@RequestMapping("/")
 public class IndexController {
 
-    private static final String url = "jdbc:mysql://localhost:3306/foosball";
+    private static final String url = "jdbc:mysql://192.168.18.245:3306/foosball";
     private static final String user = "root";
     private static final String password = "root";
 
