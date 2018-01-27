@@ -18,7 +18,7 @@ import java.util.ArrayList;
 //@RequestMapping("/")
 public class IndexController {
 
-    private static final String url = "jdbc:mysql://mysql:3306/foosball";
+    private static final String url = "jdbc:mysql://localhost:3306/foosball";
     private static final String user = "root";
     private static final String password = "root";
 
@@ -77,8 +77,13 @@ public class IndexController {
         } finally {
             try { con.close(); } catch(SQLException se) {  System.out.println("c2");}
             try { stmt.close(); } catch(SQLException se) { System.out.println("c3");}
+           try {
+               rs.close();
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
 
-        }
+       }
         System.out.println(text + " statistics:");
         for (String str : stat) {
             System.out.println(str);
@@ -156,6 +161,11 @@ public class IndexController {
                 stmt.close();
             } catch (SQLException se) {
                 System.out.println("c3");
+            }
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
         model.setViewName("newMatch");
