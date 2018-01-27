@@ -1,6 +1,7 @@
 package au.andrew.controller;
 
 
+import au.andrew.dbProc.DataProc;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +19,9 @@ import java.util.ArrayList;
 //@RequestMapping("/")
 public class IndexController {
 
-    private static final String url = "jdbc:mysql://192.168.18.245:3306/foosball";
+    private static final String url = "jdbc:mysql://localhost:3306/foosball";
     private static final String user = "root";
-    private static final String password = "my5UsOexGn";
+    private static final String password = "root";
 
     // JDBC variables for opening and managing connection
     private static Connection con;
@@ -28,6 +29,7 @@ public class IndexController {
     private static ResultSet rs;
     PreparedStatement preparedStmt;
     String query = "";
+    DataProc dataProc = new DataProc();
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -36,12 +38,6 @@ public class IndexController {
         m.addAttribute("someAttribute", "someValue");
         return "index";
     }
-    /*@RequestMapping(method = RequestMethod.POST)
-    @GetMapping("/login")
-    public String login(Model m) {
-        m.addAttribute("someAttribute", "login page!");
-        return "login";
-    }*/
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(@RequestParam(value = "username", required = false) String text) {
@@ -50,15 +46,9 @@ public class IndexController {
         ArrayList<String> stat = new ArrayList<>();
         System.out.println(text);
         query = "SELECT * FROM matches";
-        //System.out.println(query);
-        boolean flag = true;
+        rs = dataProc.getData(query);
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(url, user, password);
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(query);
-
+       try {
             while (rs.next()) {
                 for (String st:rs.getString(3).split(";")) {
                     if (text.toLowerCase().equals(st.toLowerCase())){
@@ -71,70 +61,33 @@ public class IndexController {
                     }
                 }
             }
-        } catch (SQLException | ClassNotFoundException sqlEx) {
-            sqlEx.printStackTrace();
-            System.out.println("c1");
+        } catch (SQLException e) {e.printStackTrace();
         } finally {
-            try { con.close(); } catch(SQLException se) {  System.out.println("c2");}
-            try { stmt.close(); } catch(SQLException se) { System.out.println("c3");}
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
+            dataProc.conClose();
         }
-        System.out.println(text + " statistics:");
+
         for (String str : stat) {
             System.out.println(str);
         }
-
-/*if (flag) {
-    System.out.println("HI");
-    query = "INSERT INTO users(username,game,score) VALUES ('" + text + "','3', 5);";
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                con = DriverManager.getConnection(url, user, password);
-
-                preparedStmt = con.prepareStatement(query);
-                preparedStmt.execute();
-
-            } catch (SQLException | ClassNotFoundException sqlEx) {
-                sqlEx.printStackTrace();
-            } finally {
-                try {
-                    con.close();
-                } catch (SQLException ignored) {  }
-                try {
-                    preparedStmt.close();
-                } catch (SQLException ignored) {  }
-            }
-        }*/
-
 
         text = "Hello, " + text + "!";
         model.addObject("someAttribute", text);
         model.addObject("someAttribute2", stat);
         model.setViewName("login");
         return model;
-
     }
+
+
 
     @RequestMapping(value = "/newMatch", method = RequestMethod.POST)
     public ModelAndView newMatch(@RequestParam(value = "username", required = false) String text) {
 
         ModelAndView model = new ModelAndView();
-
+        query = "SELECT * FROM matches ORDER BY id DESC LIMIT 1;";
+        rs = dataProc.getData(query);
 
         try {
-            query = "SELECT * FROM matches ORDER BY id DESC LIMIT 1;";
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(url, user, password);
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(query);
-
             while (rs.next()) {
-
 
                 if (rs.getString(5).equals("-1") || rs.getString(6).equals("-1")) {
                     model.addObject("team1Attribute", rs.getString(3));
@@ -148,29 +101,16 @@ public class IndexController {
                 }
             }
 
-        } catch (SQLException | ClassNotFoundException sqlEx) {
-            sqlEx.printStackTrace();
-            System.out.println("c1");
+        } catch (SQLException e) { e.printStackTrace();
+
         } finally {
-            try {
-                con.close();
-            } catch (SQLException se) {
-                System.out.println("c2");
-            }
-            try {
-                stmt.close();
-            } catch (SQLException se) {
-                System.out.println("c3");
-            }
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            dataProc.conClose();
         }
         model.setViewName("newMatch");
         return model;
     }
+
+
 
     @RequestMapping(value = "/saveMatch", method = RequestMethod.POST)
     public ModelAndView saveMatch(@RequestParam(value = "team1", required = true) String team1,
@@ -193,26 +133,12 @@ public class IndexController {
             } else if (Integer.valueOf(team1score.trim())<Integer.valueOf(team2score.trim())){
                 team1score = "0"; team2score = "1";
             } else {team1score = "0"; team2score = "0";}}
-        //String [] team1players = team1.split("[;]");
-        //String [] team2players = team2.split("[;]");
-        System.out.println(team1score);
+        //System.out.println(team1score);
 
         query = "INSERT INTO matches(gameTime, team1, team2, team1score, team2score) " +
                 "VALUES ('" + date + "', '" + team1 + "', '"  + team2 + "', " + team1score + ", " + team2score + ");";
-        System.out.println(query);
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(url, user, password);
-            preparedStmt = con.prepareStatement(query);
-            preparedStmt.execute();
-
-        } catch (SQLException | ClassNotFoundException sqlEx) {
-            sqlEx.printStackTrace();
-        } finally {
-            try {con.close();} catch (SQLException ignored) {  }
-            try {preparedStmt.close();} catch (SQLException ignored) {  }
-        }
+        //System.out.println(query);
+        dataProc.putData(query);
 
         model.addObject("someAttribute", "matches");
         model.setViewName("index");
