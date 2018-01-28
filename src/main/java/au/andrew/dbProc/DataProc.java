@@ -1,21 +1,16 @@
 package au.andrew.dbProc;
 
-
-
 import java.sql.*;
-import java.util.ArrayList;
 
 public class DataProc {
-    private static final String url = "jdbc:mysql://localhost:3306/foosball";
-    private static final String user = "root";
+    private static final String url = "jdbc:mysql://192.168.18.245:3306/foosball";
+    private static final String user = "my5UsOexGn";
     private static final String password = "root";
 
     // JDBC variables for opening and managing connection
     private static Connection con;
     private static Statement stmt;
     private static ResultSet rs;
-    private PreparedStatement preparedStmt;
-    String query = "";
 
 
     private Connection getCon(){
@@ -53,7 +48,7 @@ public class DataProc {
     public void putData(String query){
         try {
             con = getCon();
-            preparedStmt = con.prepareStatement(query);
+            PreparedStatement preparedStmt = con.prepareStatement(query);
             preparedStmt.execute();
             preparedStmt.close();
             con.close();
@@ -61,13 +56,4 @@ public class DataProc {
             e.printStackTrace();
         }
     }
-
-
-
-
-   /* public ArrayList<String> getUserStat(String username){
-        ResultSet rs = getData(getCon(), username);
-        return null;
-    }*/
-
 }

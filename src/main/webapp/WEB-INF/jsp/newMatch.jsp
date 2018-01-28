@@ -42,10 +42,27 @@
         if (sec<10) sec='0'+sec;
         MyDate.value=year+'-'+month+'-'+day+' '+hour+':'+minute+':'+sec;
     </script>
+
+    <!--script>
+        function setCaretPosition(o, pos) {
+            o=document.getElementById(o);
+            if(o.setSelectionRange) {
+                o.focus();
+                o.setSelectionRange(pos,pos);
+            }else if (o.createTextRange) { // IE
+                var range = o.createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', pos);
+                range.moveStart('character', pos);
+                range.select();
+            }
+        }
+
+    </script-->
 </div>
     <p><b>${message}</b></p>
     <p><b>TEAM 1:</b></p>
-    <p><textarea name="team1">${team1Attribute}</textarea></p>
+    <p><textarea name="team1" placeholder="name1; name2; ..">${team1Attribute}</textarea></p>
 
     <p><b>TEAM 2:</b></p>
     <p><textarea name="team2">${team2Attribute}</textarea></p>
@@ -55,6 +72,9 @@
 
     <p><b>TEAM 2 Score:</b></p>
     <p><textarea name="team2score">${team2scoreAttribute}</textarea></p>
+
+    <p><b>Match's details:</b></p>
+    <p><textarea name="matchDetails">${matchDetails}</textarea></p>
     <p><input type="submit" value="Save Match"></p>
 
 </form>

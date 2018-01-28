@@ -71,8 +71,6 @@
 
 
     <build>
-        <!--sourceDirectory>src</sourceDirectory>
-        <finalName>ROOT</finalName-->
 
         <plugins>
             <plugin>
