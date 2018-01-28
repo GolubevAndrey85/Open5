@@ -15,11 +15,11 @@
     </form>
     <form class="form-signin" name='loginForm' action="/login" method='POST'>
         <input class="form-control" type='text' name='username' placeholder="Player's name">
+        <input class="form-control" type='text' name='anotherUsername' placeholder="Player's name for comparison (leave empty for individual statistics)">
         <input class="btn btn-lg btn-primary btn-block" name="showPlayerInfo" type="submit"
                value="show player info"/>
     </form>
 
 </div>
-<!--p><img src="../img/ico.gif" width="581" height="117"></p-->
 </body>
 </html>
