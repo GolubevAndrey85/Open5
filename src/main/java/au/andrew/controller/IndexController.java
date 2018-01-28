@@ -103,6 +103,7 @@ public class IndexController {
 
             try {
                 while (rs.next()) {
+                    competitor = false;
                     for (String st : rs.getString(3).split(";")) {
                         if (mainUserName.toLowerCase().trim().equals(st.toLowerCase().trim())) {
                             competitor = true;
