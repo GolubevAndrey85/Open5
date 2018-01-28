@@ -77,7 +77,7 @@ public class IndexController {
                 else mainUserName = "Hello! You are unregistered player! You need to play at lest 1 match.";
             else mainUserName = "Hello, " + mainUserName + "!";
 
-            model.addObject("mainUserNameAttr", mainUserName);
+            model.addObject("mainUserNameAttr", mainUserName.trim());
             model.addObject("mUstatScoreAttr", statScore.toString());
             model.addObject("mUstatSatesAttr", statDates.toString());
             model.addObject("mUscoreAttr", String.valueOf(score));
@@ -162,7 +162,7 @@ public class IndexController {
             else if (comPres) mainUserName = "Hello, " + mainUserName + "!";
             else mainUserName = "Hello, " + mainUserName + "! There is no " + anotherUserName + " player!";
 
-            model.addObject("mainUserNameAttr", mainUserName);
+            model.addObject("mainUserNameAttr", mainUserName.trim());
             model.addObject("mUstatScoreAttr", statScore.toString());
             model.addObject("mUstatSatesAttr", statDates.toString());
             model.addObject("mUscoreAttr", String.valueOf(score));
