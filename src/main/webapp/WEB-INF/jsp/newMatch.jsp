@@ -1,32 +1,17 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Andrew
-  Date: 26/01/2018
-  Time: 6:23 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>New Match</title>
-    <title>Текстовое поле</title>
-    <style>
-        textarea {
-            background: #fce9c0; /* Цвет фона */
-            border: 2px solid #a9c358; /* Параметры рамки */
-            padding: 10px; /* Поля */
-            width: 100%; /* Ширина */
-            height: 200px; /* Высота */
-            box-sizing: border-box; /* Алгоритм расчёта ширины */
-            font-size: 14px; /* Размер шрифта */
-        }
-    </style>
 </head>
+
 <body>
-<div>MATCH</div>
+<div class="container">
 <form action="/saveMatch" method="post">
 <div>
-    <input id=MyDate name="date" type=text readonly>
+    <h4 class="form-signin-heading">Data and time of the Match</h4>
+    <input class="form-control" id=MyDate name="date" type=text readonly>
     <script>
         var dt=new Date();
         var month = dt.getMonth()+1;
@@ -43,41 +28,24 @@
         MyDate.value=year+'-'+month+'-'+day+' '+hour+':'+minute+':'+sec;
     </script>
 
-    <!--script>
-        function setCaretPosition(o, pos) {
-            o=document.getElementById(o);
-            if(o.setSelectionRange) {
-                o.focus();
-                o.setSelectionRange(pos,pos);
-            }else if (o.createTextRange) { // IE
-                var range = o.createTextRange();
-                range.collapse(true);
-                range.moveEnd('character', pos);
-                range.moveStart('character', pos);
-                range.select();
-            }
-        }
-
-    </script-->
 </div>
     <p><b>${message}</b></p>
     <p><b>TEAM 1:</b></p>
-    <p><textarea name="team1" placeholder="name1; name2; ..">${team1Attribute}</textarea></p>
+    <p><textarea class="form-control" name="team1" placeholder="name1; name2; ...">${team1Attribute}</textarea></p>
 
     <p><b>TEAM 2:</b></p>
-    <p><textarea name="team2">${team2Attribute}</textarea></p>
+    <p><textarea class="form-control" name="team2" placeholder="name1; name2; ...">${team2Attribute}</textarea></p>
 
     <p><b>TEAM 1 Score:</b></p>
-    <p><textarea name="team1score">${team1scoreAttribute}</textarea></p>
+    <p><textarea class="form-control" name="team1score">${team1scoreAttribute}</textarea></p>
 
     <p><b>TEAM 2 Score:</b></p>
-    <p><textarea name="team2score">${team2scoreAttribute}</textarea></p>
+    <p><textarea class="form-control" name="team2score">${team2scoreAttribute}</textarea></p>
 
     <p><b>Match's details:</b></p>
-    <p><textarea name="matchDetails">${matchDetails}</textarea></p>
-    <p><input type="submit" value="Save Match"></p>
-
+    <p><textarea class="form-control" name="matchDetails" placeholder="It was amazing match!">${matchDetails}</textarea></p>
+    <p><input class="btn btn-lg btn-primary btn-block" type="submit" value="Save the Match"></p>
 </form>
-
+</div>
 </body>
 </html>

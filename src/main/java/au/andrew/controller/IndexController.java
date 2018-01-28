@@ -33,11 +33,10 @@ public class IndexController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(@RequestParam(value = "username", required = false) String text) {
+
         int score = 0;
 
         ModelAndView model = new ModelAndView();
-        //ArrayList<String> statScore = new ArrayList<>();
-        //ArrayList<String> statDates = new ArrayList<>();
         StringBuilder statScore = new StringBuilder();
         StringBuilder statDates = new StringBuilder();
         String bufScore, bufDate;
@@ -47,28 +46,29 @@ public class IndexController {
         query = "SELECT * FROM matches where team1score != -1 or team2score != -1;";
         rs = dataProc.getData(query);
 
-       try {
+        try {
             while (rs.next()) {
-                for (String st:rs.getString(3).split(";")) {
-                    if (text.toLowerCase().equals(st.toLowerCase())){
-                        score += Integer.valueOf(rs.getString(5));
-                        bufDate = rs.getString(2)+";";
-                        bufScore = score + ";";//rs.getString(5)+";";
-                        statScore.append(bufScore);//.add(rs.getString(2));
+                for (String st : rs.getString(3).split(";")) {
+                    if (text.toLowerCase().equals(st.toLowerCase())) {
+                        score += rs.getInt(5);
+                        bufDate = rs.getString(2) + ";";
+                        bufScore = score + ";";
+                        statScore.append(bufScore);
                         statDates.append(bufDate);
                     }
                 }
-                for (String st:rs.getString(4).split(";")) {
-                    if (text.toLowerCase().equals(st.toLowerCase())){
-                        score += Integer.valueOf(rs.getString(6));
-                        bufDate = rs.getString(2)+";";
-                        bufScore = score + ";";//rs.getString(6)+";";
-                        statScore.append(bufScore);//.add(rs.getString(2));
+                for (String st : rs.getString(4).split(";")) {
+                    if (text.toLowerCase().equals(st.toLowerCase())) {
+                        score += rs.getInt(6);
+                        bufDate = rs.getString(2) + ";";
+                        bufScore = score + ";";
+                        statScore.append(bufScore);
                         statDates.append(bufDate);
                     }
                 }
             }
-        } catch (SQLException e) {e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             dataProc.conClose();
         }
@@ -80,25 +80,34 @@ public class IndexController {
 //statScore.add("'1'"); statScore.add("'5'"); statScore.add("'3'");
 //statDates.add("'2016-10-04 22:23:00'"); statDates.add("'2016-10-04 22:23:00'");
 //statDates.add("'2016-10-04 22:23:00'");
-        System.out.println(statDates);
-        System.out.println(statScore);
+        System.out.println(statDates.length());
+        System.out.println(statScore.length());
 
 
-        StringBuilder statScore1 = new StringBuilder("1;0;");
-        StringBuilder statDates1 = new StringBuilder("2018-01-10 10:00:00.0;2018-01-01 01:46:53.0;");
+        //StringBuilder statScore1 = new StringBuilder("1;0;");
+        //StringBuilder statDates1 = new StringBuilder("2018-01-10 10:00:00.0;2018-01-01 01:46:53.0;");
 
-        System.out.println(statDates1);
-        System.out.println(statScore1);
+        //System.out.println(statDates1);
+        //System.out.println(statScore1);
         //String re = statDates.toString();
 
-        text = "Hello, " + text + "!";
+        String separator = System.getProperty("line.separator");
+        if (statDates.length() == 0)
+            if (text.length() != 0) text = "Hello, " + text + "!" +
+                    separator + "You are unregistered player!"
+                    + separator + "You need to play at lest 1 match.";
+            else text = "Hello!"
+                    + separator + "You are unregistered player!"
+                    + separator + "You need to play at lest 1 match.";
+        else text = "Hello, " + text + "!";
+
+        System.out.println(text);
         model.addObject("someAttribute", text);
         model.addObject("someAttribute2", statScore.toString());
         model.addObject("someAttribute3", statDates.toString());
         model.setViewName("login");
         return model;
     }
-
 
 
     @RequestMapping(value = "/newMatch", method = RequestMethod.POST)
@@ -125,7 +134,8 @@ public class IndexController {
                 }
             }
 
-        } catch (SQLException e) { e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
 
         } finally {
             dataProc.conClose();
@@ -133,7 +143,6 @@ public class IndexController {
         model.setViewName("newMatch");
         return model;
     }
-
 
 
     @RequestMapping(value = "/saveMatch", method = RequestMethod.POST)
@@ -153,24 +162,30 @@ public class IndexController {
         System.out.println("team1score = " + team1score);
         System.out.println("team2score = " + team2score);
 
-        if (!team1score.equals("-1")&&!team2score.equals("-1")&&matchUpdated){
+        if (!team1score.equals("-1") && !team2score.equals("-1") && matchUpdated) {
             query = "delete from matches where team1score = -1 or team2score = -1;";
             dataProc.putData(query);
             matchUpdated = false;
         }
 
-        if (!team1score.equals("-1")||!team2score.equals("-1")){
-            if (Integer.valueOf(team1score.trim())>Integer.valueOf(team2score.trim())){
-                team1score = "1"; team2score = "0";
-            } else if (Integer.valueOf(team1score.trim())<Integer.valueOf(team2score.trim())){
-                team1score = "0"; team2score = "1";
-            } else {team1score = "0"; team2score = "0";}}
+        if (!team1score.equals("-1") || !team2score.equals("-1")) {
+            if (Integer.valueOf(team1score.trim()) > Integer.valueOf(team2score.trim())) {
+                team1score = "1";
+                team2score = "0";
+            } else if (Integer.valueOf(team1score.trim()) < Integer.valueOf(team2score.trim())) {
+                team1score = "0";
+                team2score = "1";
+            } else {
+                team1score = "0";
+                team2score = "0";
+            }
+        }
 
 
         //System.out.println(team1score);
 
         query = "INSERT INTO matches(gameTime, team1, team2, team1score, team2score, details) " +
-                "VALUES ('" + date + "', '" + team1 + "', '"  + team2 + "', " + team1score + ", " + team2score + ", '" + matchDetails + "');";
+                "VALUES ('" + date + "', '" + team1 + "', '" + team2 + "', " + team1score + ", " + team2score + ", '" + matchDetails + "');";
         //System.out.println(query);
         dataProc.putData(query);
 

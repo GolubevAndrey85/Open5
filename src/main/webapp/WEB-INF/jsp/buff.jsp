@@ -24,5 +24,19 @@
         </tr>
     </c:forEach>
 </div>
+
+<!--img src="${pageContext.request.contextPath}/WEB-INF/img/ico.gif"-->
+
+<style>
+    textarea {
+        background: #fce9c0; /* Цвет фона */
+        border: 2px solid #a9c358; /* Параметры рамки */
+        padding: 10px; /* Поля */
+        width: 100%; /* Ширина */
+        height: 200px; /* Высота */
+        box-sizing: border-box; /* Алгоритм расчёта ширины */
+        font-size: 14px; /* Размер шрифта */
+    }
+</style>
 </body>
 </html>
