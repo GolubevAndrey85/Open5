@@ -10,7 +10,9 @@
 <body>
 
 <div class="container">
-<h2 class="form-signin-heading">${someAttribute}</h2>
+<h2 class="form-signin-heading">${someAttribute}</h2><br>
+    <h4 id="winsNum" class="text-success">Your total number of WINS is: ${someAttribute4}</h4>
+    <h4 id="loosNum" class="text-danger">Your total number of LOOSES is: ${someAttribute5}</h4>
 <div id="myDiv"></div>
 <script>
     <c:set var="message" value="Hello"/>
@@ -19,22 +21,19 @@
     var message2 = '<c:out value="${someAttribute2}"/>';
     var b = message2.split(';').map(Number);
     var c = message.split(';').map(String);
-    if (message.length === 0) {document.getElementById("myDiv").style.display = "none"}
+    if (message.length === 0) {document.getElementById("myDiv").style.display = "none";
+        document.getElementById("winsNum").style.display = "none";
+        document.getElementById("loosNum").style.display = "none";}
 
     var data = [
-        {
-            //x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
-            x: c,
+        {   x: c,
             y: b,
-            //y: [1, 3, 6],
             type: 'scatter'
         }
     ];
-
     Plotly.newPlot('myDiv', data);
 </script>
-    <button class="btn btn-lg btn-primary btn-block" onclick='location.href="/"'>Back to home</button>
+    <button class="btn btn-lg btn-primary btn-block" onclick='location.href="/"'>Back home</button>
 </div>
-
 </body>
 </html>

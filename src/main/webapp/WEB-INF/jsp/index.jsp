@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <form name='newMatch' action="/newMatch" method='POST'>
-        <h2 class="form-signin-heading">Please, choose the action</h2>
+        <h2 class="form-signin-heading">Please, choose the action</h2><br>
         <input class="btn btn-lg btn-primary btn-block" name="createNewMatch" type="submit"
                value="create new match"/>
     </form>
@@ -19,7 +19,7 @@
                value="show player info"/>
     </form>
 
-
 </div>
+<!--p><img src="../img/ico.gif" width="581" height="117"></p-->
 </body>
 </html>

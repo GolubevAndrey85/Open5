@@ -35,6 +35,7 @@ public class IndexController {
     public ModelAndView login(@RequestParam(value = "username", required = false) String text) {
 
         int score = 0;
+        int looses = 0;
 
         ModelAndView model = new ModelAndView();
         StringBuilder statScore = new StringBuilder();
@@ -50,6 +51,7 @@ public class IndexController {
             while (rs.next()) {
                 for (String st : rs.getString(3).split(";")) {
                     if (text.toLowerCase().equals(st.toLowerCase())) {
+                        if (rs.getInt(5) == 0) looses ++;
                         score += rs.getInt(5);
                         bufDate = rs.getString(2) + ";";
                         bufScore = score + ";";
@@ -59,6 +61,7 @@ public class IndexController {
                 }
                 for (String st : rs.getString(4).split(";")) {
                     if (text.toLowerCase().equals(st.toLowerCase())) {
+                        if (rs.getInt(6) == 0) looses ++;
                         score += rs.getInt(6);
                         bufDate = rs.getString(2) + ";";
                         bufScore = score + ";";
@@ -72,24 +75,6 @@ public class IndexController {
         } finally {
             dataProc.conClose();
         }
-
-        /*for (String str : stat) {
-            System.out.println(str);
-        }*/
-//statScore.clear(); statDates.clear();
-//statScore.add("'1'"); statScore.add("'5'"); statScore.add("'3'");
-//statDates.add("'2016-10-04 22:23:00'"); statDates.add("'2016-10-04 22:23:00'");
-//statDates.add("'2016-10-04 22:23:00'");
-        System.out.println(statDates.length());
-        System.out.println(statScore.length());
-
-
-        //StringBuilder statScore1 = new StringBuilder("1;0;");
-        //StringBuilder statDates1 = new StringBuilder("2018-01-10 10:00:00.0;2018-01-01 01:46:53.0;");
-
-        //System.out.println(statDates1);
-        //System.out.println(statScore1);
-        //String re = statDates.toString();
 
         String separator = System.getProperty("line.separator");
         if (statDates.length() == 0)
@@ -105,6 +90,8 @@ public class IndexController {
         model.addObject("someAttribute", text);
         model.addObject("someAttribute2", statScore.toString());
         model.addObject("someAttribute3", statDates.toString());
+        model.addObject("someAttribute4", String.valueOf(score));
+        model.addObject("someAttribute5", String.valueOf(looses));
         model.setViewName("login");
         return model;
     }
