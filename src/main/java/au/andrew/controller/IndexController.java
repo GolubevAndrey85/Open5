@@ -56,7 +56,7 @@ public class IndexController {
                     for (String st : rs.getString(3).split(";")) {
                         //System.out.println("first team: " + st);
                         if (text.toLowerCase().trim().equals(st.toLowerCase().trim())) {
-                            if (rs.getInt(5) == 0) looses++;
+                            if ((rs.getInt(5) == 0)&&(rs.getInt(6) == 1)) looses++;
                             score += rs.getInt(5);
                             bufDate = rs.getString(2) + ";";
                             bufScore = score + ";";
@@ -67,7 +67,7 @@ public class IndexController {
                     for (String st : rs.getString(4).split(";")) {
                         //System.out.println("second team: " + st);
                         if (text.toLowerCase().trim().equals(st.toLowerCase().trim())) {
-                            if (rs.getInt(6) == 0) looses++;
+                            if ((rs.getInt(6) == 0)&&(rs.getInt(5) == 1)) looses++;
                             score += rs.getInt(6);
                             bufDate = rs.getString(2) + ";";
                             bufScore = score + ";";
@@ -119,7 +119,7 @@ public class IndexController {
                     for (String st : rs.getString(3).split(";")) {
                         if (text.toLowerCase().trim().equals(st.toLowerCase().trim())) {
                             competitor = true;
-                            if (rs.getInt(5) == 0) looses++;
+                            if ((rs.getInt(5) == 0)&&(rs.getInt(6) == 1)) looses++;
                             score += rs.getInt(5);
                             bufDate = rs.getString(2) + ";";
                             bufScore = score + ";";
@@ -130,7 +130,7 @@ public class IndexController {
                     if (competitor) {
                         for (String st : rs.getString(4).split(";")) {
                             if (text2.toLowerCase().trim().equals(st.toLowerCase().trim())) {
-                                if (rs.getInt(6) == 0) loosesCompetitor++;
+                                if ((rs.getInt(6) == 0)&&(rs.getInt(5) == 1)) loosesCompetitor++;
                                 scoreCompetitor += rs.getInt(6);
                             }
                         }
@@ -139,8 +139,8 @@ public class IndexController {
                     for (String st : rs.getString(4).split(";")) {
                         if (text.toLowerCase().trim().equals(st.toLowerCase().trim())) {
                             competitor = true;
-                            if (rs.getInt(5) == 0) looses++;
-                            score += rs.getInt(5);
+                            if ((rs.getInt(5) == 1)&&(rs.getInt(6) == 0)) looses++;
+                            score += rs.getInt(6);
                             bufDate = rs.getString(2) + ";";
                             bufScore = score + ";";
                             statScore.append(bufScore);
@@ -150,8 +150,8 @@ public class IndexController {
                     if (competitor) {
                         for (String st : rs.getString(3).split(";")) {
                             if (text2.toLowerCase().trim().equals(st.toLowerCase().trim())) {
-                                if (rs.getInt(6) == 0) loosesCompetitor++;
-                                scoreCompetitor += rs.getInt(6);
+                                if ((rs.getInt(5) == 0)&&(rs.getInt(6) == 1)) loosesCompetitor++;
+                                scoreCompetitor += rs.getInt(5);
                             }
                         }
                     }
