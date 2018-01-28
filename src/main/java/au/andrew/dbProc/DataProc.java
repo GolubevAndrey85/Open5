@@ -4,8 +4,8 @@ import java.sql.*;
 
 public class DataProc {
     private static final String url = "jdbc:mysql://192.168.18.245:3306/foosball";
-    private static final String user = "my5UsOexGn";
-    private static final String password = "root";
+    private static final String user = "root";
+    private static final String password = "my5UsOexGn";
 
     // JDBC variables for opening and managing connection
     private static Connection con;
