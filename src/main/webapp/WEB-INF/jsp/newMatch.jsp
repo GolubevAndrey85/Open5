@@ -60,7 +60,7 @@
     <p><input class="form-control" id="team2ID" name="team2" value="${team2Attribute}" placeholder="name1; name2; ...; nameX;" pattern="^[_A-Za-z0-9;\s]{1,};$">${team2Attribute}</input></p>
 
     <div id="warning" class="alert-warning">
-        <strong>Warning!</strong> Indicates a warning that might need attention.
+        <strong>Warning!</strong> There are the same players in the bots teams!
     </div>
 
     <script>
